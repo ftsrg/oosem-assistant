@@ -1,0 +1,84 @@
+package hu.bme.mit.sysml.oosem.views.listeners;
+
+import java.util.List;
+
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
+
+import hu.bme.mit.sysml.oosem.wizards.DesignToIntegrationWizard;
+import hu.bme.mit.sysml.oosem.wizards.SpecificationToDesignWizard;
+import hu.bme.mit.sysml.oosem.model.elements.OOSEMBlock;
+import hu.bme.mit.sysml.oosem.model.elements.OOSEMFeature;
+import hu.bme.mit.sysml.oosem.model.project.interfaces.OOSEMProject;
+import hu.bme.mit.sysml.oosem.util.OpenInFileUtils;
+import hu.bme.mit.sysml.oosem.util.OOSEMUtils.OOSEMBlockType;
+
+public class ContextMenuListener {
+	@FunctionalInterface
+	public interface addOptionToContextMenu {
+		void add(IMenuManager manager, Object item, OOSEMProject context);
+	}
+	
+	public static IMenuListener getContextMenuListener(List<addOptionToContextMenu> contextMenuOptions, TreeViewer treeViewer, OOSEMProject oosemProject) {
+		return manager -> {
+			ITreeSelection selection = treeViewer.getStructuredSelection();
+			Object obj = selection.getFirstElement();
+			if (obj == null || contextMenuOptions.isEmpty()) return;
+
+			for(var opt : contextMenuOptions) {
+				opt.add(manager, obj, oosemProject);
+			}
+		};
+	}
+	
+	public static class MenuOptions {
+		public static void addShowInEditorToMenu(IMenuManager manager, Object item, OOSEMProject context) {
+			if (item instanceof OOSEMBlock block) {
+				manager.add(new Action("Open in Editor") {
+					public void run() {
+						OpenInFileUtils.openEditorForEObject(block.getObject());
+					}
+				});
+			} else if (item instanceof OOSEMFeature feature) {
+				manager.add(new Action((feature.getCopiedFeature() == null) ? "Open in Editor" : "Open declaration in Editor") {
+					public void run() {
+						OpenInFileUtils.openEditorForEObject(feature.getObject());
+					}
+				});
+			}
+		}
+
+		public static void addDesignWizardToMenu(IMenuManager manager, Object item, OOSEMProject context) {
+			if (item instanceof OOSEMBlock block && block.getOOSEMBlockType() == OOSEMBlockType.SPECIFICATION) {
+				var action = new Action("Generate Design Block") {
+					public void run() {
+						WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(),
+								new SpecificationToDesignWizard(context, block));
+						dialog.open();
+					}
+				};
+				action.setEnabled(block.passedValidation());
+				manager.add(action);
+			}
+		}
+		
+		public static void addIntegrationWizardToMenu(IMenuManager manager, Object item, OOSEMProject context) {
+			if (item instanceof OOSEMBlock block && block.getOOSEMBlockType() == OOSEMBlockType.DESIGN) {
+				var action = new Action("Generate Integration Block") {
+					public void run() {
+						WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(),
+								new DesignToIntegrationWizard(context, block));
+						dialog.open();
+					}
+				};
+				action.setEnabled(block.passedValidation());
+				manager.add(action);
+			}
+		}
+	}
+}
