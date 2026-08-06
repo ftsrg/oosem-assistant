@@ -49,7 +49,7 @@ public abstract class OOSEMElement {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(blockType, object, validationErrors, validationWarnings);
+		return Objects.hash(blockType, object);
 	}
 
 	@Override
@@ -61,9 +61,7 @@ public abstract class OOSEMElement {
 		if (getClass() != obj.getClass())
 			return false;
 		OOSEMElement other = (OOSEMElement) obj;
-		return blockType == other.blockType && Objects.equals(object, other.object)
-				&& Objects.equals(validationErrors, other.validationErrors)
-				&& Objects.equals(validationWarnings, other.validationWarnings);
+		return blockType == other.blockType && Objects.equals(object, other.object);
 	}
 
 	private OOSEMBlockType blockType;

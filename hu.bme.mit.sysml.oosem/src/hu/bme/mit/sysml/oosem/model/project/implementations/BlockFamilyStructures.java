@@ -26,9 +26,10 @@ public class BlockFamilyStructures {
 				orphanBlocks.add(block);
 				continue;
 			}
-			
+				
 			processParents(data, block, oosemParents);
 		}
+		
 	}
 	
 	public Map<OOSEMBlock, Set<OOSEMBlock>> getBlocksWithFamily(){
@@ -48,6 +49,7 @@ public class BlockFamilyStructures {
 			if(parentBlock == null) { continue; }
 			
 			var childs = blocksWithFamily.get(parentBlock);
+			
 			if(childs == null) {
 				childs = new HashSet<OOSEMBlock>();
 				blocksWithFamily.put(parentBlock, childs);

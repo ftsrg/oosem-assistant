@@ -16,7 +16,7 @@ public class ProjectValidator {
 		this.data = data;
 	}
 	
-	public void validate() {
+	public void validate() {	
 		validateSpecification();
 		validateDesign();
 		validateIntegration();
@@ -75,7 +75,9 @@ public class ProjectValidator {
 		.forEach(feature -> {
 			if(feature.getOOSEMBlockType() == OOSEMBlockType.SPECIFICATION) {
 				feature.registerWarning("Properties should be updated to match the parent's OOSEM phase.");
+				System.out.println("block before registration of warning: " + block);
 				block.registerWarning("Warning(s) present in children.");
+				System.out.println("block after registration of warning: " + block);
 			} else if(feature.getOOSEMBlockType() == OOSEMBlockType.INTEGRATION) {
 				feature.registerError("Design blocks can only have design properties.");
 				block.registerError("Error(s) present in children.");

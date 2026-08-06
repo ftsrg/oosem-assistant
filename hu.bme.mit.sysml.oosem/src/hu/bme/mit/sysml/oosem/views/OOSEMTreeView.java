@@ -101,6 +101,10 @@ public class OOSEMTreeView extends OOSEMView {
 		for (var parentBlock : parentsOrdered) {
 			String parentName = generateViewBlockTitleText(parentNamePrefix, parentBlock);
 			var roots = parentsAndChilds.get(parentBlock);
+			if(roots == null) {
+				continue;
+			}
+				
 			var layoutData = new GridData(SWT.FILL, SWT.TOP, true, false);
 			List<addOptionToContextMenu> menuOptions = Arrays.asList(MenuOptions::addShowInEditorToMenu, MenuOptions::addIntegrationWizardToMenu);
 			createViewBlock(scrolledComposite, container, layoutData, parentName, roots, menuOptions);
@@ -148,6 +152,7 @@ public class OOSEMTreeView extends OOSEMView {
 		treeViewer.setContentProvider(new OOSEMModelContentProvider());
 		treeViewer.setLabelProvider(new OOSEMModelLabelProvider());
 		treeViewer.setComparator(new OOSEMViewComparator());
+		
 		treeViewer.setInput((Object[]) roots.toArray());
 
 		MenuManager menuMgr = new MenuManager();
