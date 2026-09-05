@@ -43,6 +43,8 @@ Modeling assistant to support the application of the recursive decomposition pat
 6. Right-click on labels to open the context menu
    * Open in editor: opens the block definitions placed in the model
    * Generate design/integration block: Opens a wizard to generate block frames for the next step
+   * Generate UVL feature tree: Generates an UVL model that contains every valid integration option from existing components and the configurations of those that can be integrated with an extra level in the hierarchy.
+   * Integrate from UVL configuration: Imports a configuration from a UVL configuration tool. (Currently supported tools: [flamapy.IDE](https://ide.flamapy.org/))
 
 7. The tool automatically builds the model after block generation and refreshes the dashboard after builds
 
