@@ -103,14 +103,18 @@ public class OOSEMTreeView extends OOSEMView {
 			var roots = parentsAndChilds.get(parentBlock);
 				
 			var layoutData = new GridData(SWT.FILL, SWT.TOP, true, false);
-			List<addOptionToContextMenu> menuOptions = Arrays.asList(MenuOptions::addShowInEditorToMenu, MenuOptions::addIntegrationWizardToMenu);
+			List<addOptionToContextMenu> menuOptions = Arrays.asList(
+					MenuOptions::addShowInEditorToMenu,
+					MenuOptions::addIntegrationWizardToMenu,
+					MenuOptions::addConfigureInUVLMenu,
+					MenuOptions::addIntegrateFromUVLMenu);
 			createViewBlock(scrolledComposite, container, layoutData, parentName, roots, menuOptions);
 		}
 
 		var orphanBlocks = blockFamilyStructures.getOrphanedBlocks();
 		if (!orphanBlocks.isEmpty()) {
 			var layoutData = new GridData(SWT.FILL, SWT.TOP, true, false);
-			List<addOptionToContextMenu> menuOptions = Arrays.asList(MenuOptions::addShowInEditorToMenu, MenuOptions::addIntegrationWizardToMenu);
+			List<addOptionToContextMenu> menuOptions = Arrays.asList(MenuOptions::addShowInEditorToMenu);
 			createViewBlock(scrolledComposite, container, layoutData, "Orphan blocks:", orphanBlocks, menuOptions);
 		}
 	}

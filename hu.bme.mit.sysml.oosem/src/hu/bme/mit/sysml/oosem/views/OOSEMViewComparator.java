@@ -2,7 +2,6 @@ package hu.bme.mit.sysml.oosem.views;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.omg.sysml.lang.sysml.Type;
 
 import hu.bme.mit.sysml.oosem.model.elements.OOSEMElement;
 
