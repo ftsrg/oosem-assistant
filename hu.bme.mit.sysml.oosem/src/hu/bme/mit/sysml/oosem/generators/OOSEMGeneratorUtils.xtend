@@ -13,7 +13,7 @@ import hu.bme.mit.sysml.oosem.util.OOSEMUtils
 import org.omg.sysml.lang.sysml.Usage
 import org.omg.sysml.lang.sysml.Definition
 
-class GeneratorUtils {
+class OOSEMGeneratorUtils {
 	def static dispatch String getSysMLType(OccurrenceDefinition o){
 		return "occurrence"
 	}

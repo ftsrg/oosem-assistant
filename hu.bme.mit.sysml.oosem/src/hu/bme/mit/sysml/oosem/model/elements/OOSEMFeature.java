@@ -3,6 +3,8 @@ package hu.bme.mit.sysml.oosem.model.elements;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
+import org.omg.sysml.lang.sysml.Feature;
+import org.omg.sysml.util.FeatureUtil;
 
 public class OOSEMFeature extends OOSEMElement{
 
@@ -50,6 +52,22 @@ public class OOSEMFeature extends OOSEMElement{
 		return type;
 	}
 	
+	public int getLowerMultiplicity() {
+		var mr = FeatureUtil.getMultiplicityRangeOf(((Feature)object).getMultiplicity());
+		var lb = mr.getLowerBound();
+		if(lb == null) {
+			return mr.valueOf(mr.getUpperBound());
+		} else {
+			return mr.valueOf(lb);
+		}
+	}
+	
+	public int getHigherMultiplicity() {
+		var mr = FeatureUtil.getMultiplicityRangeOf(((Feature)object).getMultiplicity());
+		var ub = mr.getUpperBound();
+		return mr.valueOf(ub);
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(copiedFeature, definedIn, refinedFeature, type);
@@ -65,7 +83,7 @@ public class OOSEMFeature extends OOSEMElement{
 			return false;
 		OOSEMFeature other = (OOSEMFeature) obj;
 		return Objects.equals(copiedFeature, other.copiedFeature) && Objects.equals(definedIn, other.definedIn)
-				&& Objects.equals(refinedFeature, other.refinedFeature) && Objects.equals(type, other.type);
+				&& Objects.equals(refinedFeature, other.refinedFeature) && Objects.equals(type, other.type) && Objects.equals(object, other.object);
 	}
 
 

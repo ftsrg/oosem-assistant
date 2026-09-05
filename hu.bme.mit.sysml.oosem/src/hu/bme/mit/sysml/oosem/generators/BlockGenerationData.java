@@ -4,9 +4,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
-
 import hu.bme.mit.sysml.oosem.generators.BlockGenerationData.RefinementData.RefinementConfiguration.RefinementWorkflow;
 import hu.bme.mit.sysml.oosem.model.elements.OOSEMBlock;
 import hu.bme.mit.sysml.oosem.model.elements.OOSEMFeature;
@@ -103,6 +100,11 @@ public class BlockGenerationData {
 				this.newTypeName = newTypeName;
 			}
 			
+			public RefinementConfiguration(OOSEMFeature refinedFeature, OOSEMBlock type, String name, RefinementWorkflow workflow, String newTypeName, Set<RefinementConfiguration> subConfigs) {
+				this(refinedFeature, type, name, workflow, newTypeName);
+				this.subConfigs.addAll(subConfigs);
+			}
+			
 			public OOSEMFeature getRefinedFeature() {
 				return refinedFeature;
 			}
@@ -116,10 +118,20 @@ public class BlockGenerationData {
 				return workflow;
 			}
 			public boolean requiresIntegration() {
-				return workflow == RefinementWorkflow.CHOOSE_EXISTING || workflow == RefinementWorkflow.GENERATE_STUB;
+				return workflow == RefinementWorkflow.CHOOSE_EXISTING ||
+					   workflow == RefinementWorkflow.GENERATE_STUB ||
+					   workflow  == RefinementWorkflow.CONFIGURE;
 			}
 			public String getNewTypeName() {
 				return newTypeName;
+			}
+			
+			public boolean isHierarchical() {
+				return !subConfigs.isEmpty();
+			}
+			
+			public Set<RefinementConfiguration> getSubConfigurations() {
+				return subConfigs;
 			}
 			
 			@Override
@@ -142,9 +154,10 @@ public class BlockGenerationData {
 			private final String name;
 			private RefinementWorkflow workflow;
 			private final String newTypeName;
+			private final Set<RefinementConfiguration> subConfigs = new HashSet<>(); 
 			
 			public enum RefinementWorkflow {
-				SKIP, CHOOSE_EXISTING, GENERATE_STUB
+				SKIP, CHOOSE_EXISTING, GENERATE_STUB, CONFIGURE, UNINTEGRATED
 			}
 		}
 	}

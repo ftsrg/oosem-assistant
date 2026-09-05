@@ -152,6 +152,10 @@ public class OOSEMUtils {
 		return getOOSEMBlockType(o) == OOSEMBlockType.DESIGN || getOOSEMBlockType(o) == OOSEMBlockType.INTEGRATION;
 	}
 	
+	public static boolean filterInegrations(EObject o) {
+		return getOOSEMBlockType(o) == OOSEMBlockType.INTEGRATION;
+	}
+	
 	public static List<Type> getParentBlocksWithType(OOSEMBlockType parentType, OccurrenceDefinition o) {
 		return o.allSupertypes().stream()
 				.filter(t -> (t.getDeclaredName() != null && !t.getDeclaredName().isEmpty()

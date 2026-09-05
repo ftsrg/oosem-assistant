@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.Display;
 
 import hu.bme.mit.sysml.oosem.wizards.DesignToIntegrationWizard;
 import hu.bme.mit.sysml.oosem.wizards.SpecificationToDesignWizard;
+import hu.bme.mit.sysml.oosem.wizards.UVLbasedIntegrationWizard;
+import hu.bme.mit.sysml.oosem.wizards.UVLmodelGenerationWizard;
 import hu.bme.mit.sysml.oosem.model.elements.OOSEMBlock;
 import hu.bme.mit.sysml.oosem.model.elements.OOSEMFeature;
 import hu.bme.mit.sysml.oosem.model.project.interfaces.OOSEMProject;
@@ -73,6 +75,34 @@ public class ContextMenuListener {
 					public void run() {
 						WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(),
 								new DesignToIntegrationWizard(context, block));
+						dialog.open();
+					}
+				};
+				action.setEnabled(block.passedValidation());
+				manager.add(action);
+			}
+		}
+		
+		public static void addConfigureInUVLMenu(IMenuManager manager, Object item, OOSEMProject context) {
+			if (item instanceof OOSEMBlock block && block.getOOSEMBlockType() == OOSEMBlockType.DESIGN) {
+				var action = new Action("Generate UVL feature tree") {
+					public void run() {
+						WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(),
+								new UVLmodelGenerationWizard(context, block));
+						dialog.open();
+					}
+				};
+				action.setEnabled(block.passedValidation());
+				manager.add(action);
+			}
+		}
+		
+		public static void addIntegrateFromUVLMenu(IMenuManager manager, Object item, OOSEMProject context) {
+			if (item instanceof OOSEMBlock block && block.getOOSEMBlockType() == OOSEMBlockType.DESIGN) {
+				var action = new Action("Integrate from UVL configuration") {
+					public void run() {
+						WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(),
+								new UVLbasedIntegrationWizard(context, block));
 						dialog.open();
 					}
 				};
