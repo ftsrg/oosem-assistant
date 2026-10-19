@@ -71,6 +71,8 @@ public class BlockConfigurationData {
 				if(configurationDepth > 2) {
 					throw new IllegalArgumentException("The maximum supported 'configurationDepth' is 2.");
 				}
+				
+				if(oosemBlock.getOOSEMBlockType() == OOSEMBlockType.INTEGRATION) return;
 
 				oosemBlock.getSubsystems().stream()
 					.filter(OOSEMElement::passedValidation)
