@@ -62,14 +62,15 @@ class OOSEMBlockGenerator {
 	def private static String generateFeature(BlockGenerationData.RefinementData.RefinementConfiguration c) '''
 		«val hasName = c.name !== null && !c.name.isEmpty»
 		«val isOptional = c.refinedFeature.lowerMultiplicity == 0 && c.refinedFeature.higherMultiplicity == 1»
+		«val sysmlType = OOSEMGeneratorUtils.getSysMLType(c.refinedFeature.object as Type)»
 		«IF c.workflow == RefinementWorkflow.CHOOSE_EXISTING »
-			«OOSEMGeneratorUtils.getOOSEMMetadata(c.type.object as Type)» «OOSEMGeneratorUtils.getSysMLType(c.refinedFeature.object as Type)» «IF hasName»«c.name» «ENDIF»:>> «c.refinedFeature.name»«IF isOptional»[1]«ENDIF» : «c.type.name»;
+			«OOSEMGeneratorUtils.getOOSEMMetadata(c.type.object as Type)» «IF !sysmlType.isNullOrEmpty»«sysmlType» «ENDIF»«IF hasName»«c.name» «ENDIF»:>> «c.refinedFeature.name»«IF isOptional»[1]«ENDIF» : «c.type.name»;
 		«ELSEIF c.workflow == RefinementWorkflow.GENERATE_STUB»
-			«generateOOSEMType(OOSEMUtils.getTypeForNextPhase(c.refinedFeature.OOSEMBlockType))» «OOSEMGeneratorUtils.getSysMLType(c.refinedFeature.object as Type)» «IF hasName»«c.name» «ENDIF»:>> «c.refinedFeature.name»«IF isOptional»[1]«ENDIF» : «c.newTypeName»;
+			«generateOOSEMType(OOSEMUtils.getTypeForNextPhase(c.refinedFeature.OOSEMBlockType))» «IF !sysmlType.isNullOrEmpty»«sysmlType» «ENDIF»«IF hasName»«c.name» «ENDIF»:>> «c.refinedFeature.name»«IF isOptional»[1]«ENDIF» : «c.newTypeName»;
 		«ELSEIF c.workflow == RefinementWorkflow.UNINTEGRATED»
-			«generateOOSEMType(OOSEMUtils.getTypeForNextPhase(c.refinedFeature.OOSEMBlockType))» :>> «c.refinedFeature.name»[0];
+			«generateOOSEMType(OOSEMUtils.getTypeForNextPhase(c.refinedFeature.OOSEMBlockType))» «IF !sysmlType.isNullOrEmpty»«sysmlType» «ENDIF»:>> «c.refinedFeature.name»[0];
 		«ELSEIF c.workflow == RefinementWorkflow.CONFIGURE»
-			«generateOOSEMType(OOSEMUtils.getTypeForNextPhase(c.type.OOSEMBlockType))» «OOSEMGeneratorUtils.getSysMLType(c.refinedFeature.object as Type)» «IF hasName»«c.name» «ENDIF»:>> «c.refinedFeature.name»«IF isOptional»[1]«ENDIF» : «c.type.name» {
+			«generateOOSEMType(OOSEMUtils.getTypeForNextPhase(c.type.OOSEMBlockType))» «IF !sysmlType.isNullOrEmpty»«sysmlType» «ENDIF»«IF hasName»«c.name» «ENDIF»:>> «c.refinedFeature.name»«IF isOptional»[1]«ENDIF» : «c.type.name» {
 			    «generateImport(c.subConfigurations)»
 			
 			    «FOR sc : c.subConfigurations»
