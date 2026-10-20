@@ -51,6 +51,7 @@ Modeling assistant to support the application of the recursive decomposition pat
 ## Known issues
 
 1. The colors of the markers do not render on Windows due to limitations between Eclipse and Windows. (The tool can still be used with monocrome markers.)
+2. OOSEM Assistant supports expression evaluation during UVL generation, but the Pilot Implementation's capabilities limit this feature to very basic expressions.
 
 ## Copyright
 
