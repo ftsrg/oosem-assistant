@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.omg.sysml.lang.sysml.Documentation;
 import org.omg.sysml.lang.sysml.Feature;
 import org.omg.sysml.lang.sysml.LibraryPackage;
 import org.omg.sysml.lang.sysml.MetadataUsage;
@@ -109,6 +110,8 @@ public class ProjectProcessor {
 		
 		for(var member : ((Namespace)block.getObject()).getOwnedMember()) {
 			if(member instanceof MetadataUsage) continue;
+			if(member instanceof Documentation) continue;
+			
 			var redefinedFeatures = FeatureUtil.getRedefinedFeaturesOf((Feature)member);
 			switch(redefinedFeatures.size()) {
 				case 0:

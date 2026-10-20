@@ -1,6 +1,7 @@
 package hu.bme.mit.sysml.oosem.wizards.pages;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -173,7 +174,11 @@ public abstract class RefinementPage extends BlockGenerationPage{
 	        });
 			workflowCombo.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			
-			workflowCombo.setInput(RefinementWorkflow.values());
+			EnumSet<RefinementWorkflow> available = EnumSet.of(
+			        RefinementWorkflow.CHOOSE_EXISTING,
+			        RefinementWorkflow.SKIP,
+			        RefinementWorkflow.GENERATE_STUB);
+			workflowCombo.setInput(available);
 			
 			workflowCombo.addSelectionChangedListener(workflowSelectionListener());
 		}
