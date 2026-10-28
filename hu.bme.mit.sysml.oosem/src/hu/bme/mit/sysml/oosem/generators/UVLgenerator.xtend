@@ -47,6 +47,7 @@ class UVLgenerator {
 		if (!(element instanceof Type)) {
 			return ""
 		}
+
 		val attributes = (element as Type).ownedFeature
 			.filter(AttributeUsage)
 			.map[generateAttribute]
@@ -60,6 +61,7 @@ class UVLgenerator {
 	
 	def private String generateAttribute(AttributeUsage attribute) {
 		val name = uvlAttributeName(attribute)
+
 		if (name === null) {
 			return null
 		}
@@ -107,7 +109,7 @@ class UVLgenerator {
 	}
 	
 	def private String uvlAttributeName(AttributeUsage attribute) {
-		val raw = attribute.declaredName ?: attribute.shortName
+		val raw = attribute.declaredName ?: attribute.shortName ?: attribute.name
 		if (raw.isNullOrEmpty) {
 			return null
 		}
