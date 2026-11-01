@@ -168,7 +168,7 @@ public class ProjectValidator {
 		for(var u : unintegratedSpecifications) {
 			if(!first) { msg = msg + ",";first = false;}
 			msg = msg + " " + ((Element)u.getObject()).getName();
-			u.registerWarning("Unintegreted subsystem.");
+			u.registerWarning("Unintegrated subsystem.");
 		}
 		integration.registerWarning(msg);
 	}

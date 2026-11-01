@@ -18,7 +18,7 @@ package OOESEMHierarcyExample {
 	}
 	
 	#integration part def I_v1 :> D_v2 {
-		#design i_par :>> d_par : SubInt;
+		#integration i_par :>> d_par : SubInt;
 	}
 	
 	#integration part def I_v2 :> I_v1 {
